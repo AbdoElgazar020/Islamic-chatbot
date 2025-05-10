@@ -32,7 +32,7 @@ const Profile = () => {
         localStorage.setItem("first_name", response.data.first_name);
         setUpdatedUser(response.data);
       } catch (error) {
-        toast.error("Failed to fetch profile.");
+        toast.error("فشل في تحميل البيانات.");
       } finally {
         setLoading(false);
       }
@@ -52,9 +52,9 @@ const Profile = () => {
       setUser(response.data);
       setEditing(false);
       localStorage.setItem("first_name", response.data.first_name);
-      toast.success("Profile updated successfully!");
+      toast.success("تم تحديث الملف الشخصي!");
     } catch (error) {
-      toast.error("Failed to update profile.");
+      toast.error("فشل في تحديث البيانات.");
     }
   };
 
@@ -67,7 +67,7 @@ const Profile = () => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
-        toast.error("User is not authenticated");
+        toast.error("لم يتم تسجيل الدخول");
         return;
       }
 
@@ -89,7 +89,7 @@ const Profile = () => {
         error.response?.data?.confirm_new_password?.[0] ||
         error.response?.data?.authorization?.[0] ||
         error.response?.data?.detail ||
-        "Something went wrong";
+        "حدث خطأ ما";
 
       toast.error(errorMessage);
     }
@@ -97,46 +97,45 @@ const Profile = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+      <div className="flex justify-center items-center h-screen bg-[#f5f0e6] font-[Amiri]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#7c5c43]"></div>
       </div>
     );
 
   return (
-    <div className="flex flex-col justify-center items-center  bg-gray-100 min-h-screen py-10">
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 w-full max-w-5xl px-4 mt-32 ">
+    <div className="flex flex-col justify-center items-center bg-[#f5f0e6] min-h-screen py-10 font-[Amiri] text-[#2c1e1e]">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 w-full max-w-5xl px-4 mt-32">
         {/* Profile Section */}
-        <div className="w-full bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 className="text-2xl font-semibold text-center mb-6 text-gray-700">
-            My Profile
+        <div className="w-full bg-[#ede3d0] p-6 rounded-2xl shadow-md border border-[#d4c4aa]">
+          <h2 className="text-2xl font-bold text-center mb-6 text-[#5b3e2b]">
+            الملف الشخصي
           </h2>
 
           {!editing ? (
-            <div className="space-y-4 text-gray-800">
+            <div className="space-y-4">
               <p className="flex items-center">
-                <span className="font-semibold w-1/3">First Name:</span>{" "}
+                <span className="font-semibold w-1/3">الاسم الأول:</span>{" "}
                 {user.first_name}
               </p>
               <p className="flex items-center">
-                <span className="font-semibold w-1/3">Last Name:</span>{" "}
+                <span className="font-semibold w-1/3">اسم العائلة:</span>{" "}
                 {user.last_name}
               </p>
               <p className="flex items-center">
-                <span className="font-semibold w-1/3">Email:</span> {user.email}
+                <span className="font-semibold w-1/3">البريد:</span>{" "}
+                {user.email}
               </p>
               <button
                 onClick={() => setEditing(true)}
-                className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                className="mt-4 w-full bg-[#7c5c43] text-white py-2 rounded-lg hover:opacity-90 transition"
               >
-                Edit Profile
+                تعديل البيانات
               </button>
             </div>
           ) : (
             <form onSubmit={handleUpdate} className="space-y-4 flex flex-col">
               <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  First Name
-                </label>
+                <label className="block text-sm mb-1">الاسم الأول</label>
                 <input
                   type="text"
                   value={updatedUser.first_name}
@@ -146,13 +145,11 @@ const Profile = () => {
                       first_name: e.target.value,
                     })
                   }
-                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2 border border-[#c8b89f] rounded-md bg-white focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Last Name
-                </label>
+                <label className="block text-sm mb-1">اسم العائلة</label>
                 <input
                   type="text"
                   value={updatedUser.last_name}
@@ -162,35 +159,33 @@ const Profile = () => {
                       last_name: e.target.value,
                     })
                   }
-                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2 border border-[#c8b89f] rounded-md bg-white focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Email
-                </label>
+                <label className="block text-sm mb-1">البريد</label>
                 <input
                   type="email"
                   value={updatedUser.email}
                   disabled
-                  className="w-full p-2 border rounded-md bg-gray-200 text-gray-600 cursor-not-allowed focus:outline-none"
+                  className="w-full p-2 border rounded-md bg-[#e8e3da] text-[#7c5c43] cursor-not-allowed"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+                className="w-full bg-[#7c5c43] text-white py-2 rounded-lg hover:opacity-90 transition"
               >
-                Save Changes
+                حفظ التعديلات
               </button>
             </form>
           )}
         </div>
 
         {/* Password Reset Section */}
-        <div className="w-full bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h3 className="text-xl font-semibold text-center mb-4 text-gray-700">
-            Reset Password
+        <div className="w-full bg-[#ede3d0] p-6 rounded-2xl shadow-md border border-[#d4c4aa]">
+          <h3 className="text-xl font-bold text-center mb-4 text-[#5b3e2b]">
+            تغيير كلمة المرور
           </h3>
           <form onSubmit={handlePasswordReset} className="space-y-4">
             {[
@@ -200,25 +195,25 @@ const Profile = () => {
               "confirm_new_password",
             ].map((field, index) => (
               <div key={index}>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm mb-1">
                   {field.replace("_", " ")}
                 </label>
                 <input
                   type={field.includes("password") ? "password" : "email"}
                   name={field}
-                  placeholder={`Enter your ${field.replace("_", " ")}`}
+                  placeholder={`اكتب ${field.replace("_", " ")}`}
                   value={formData[field]}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2 border border-[#c8b89f] rounded-md bg-white focus:outline-none"
                   required
                 />
               </div>
             ))}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
+              className="w-full bg-[#7c5c43] text-white py-2 rounded-md hover:opacity-90 transition"
             >
-              Reset Password
+              تغيير كلمة المرور
             </button>
           </form>
         </div>

@@ -50,109 +50,108 @@ const Register = () => {
 
   return (
     <>
-      <div className="w-[100%] bg-white flex justify-center items-center">
+      <div className="w-full bg-[#f2ece5] flex justify-center items-center">
         <a href="/" className="p-1.5">
-          <span className="sr-only">Your Company</span>
+          <span className="sr-only">العودة للرئيسية</span>
           <img className="h-[60px] w-[60px]" src={icon} alt="Logo" />
         </a>
       </div>
-      <div className="h-[90vh] flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-lg max-sm:w-[90%] sm:w-[90%] md:w-[70%] lg:w-[50%]">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-            Sign Up
+
+      <div className="h-[90vh] flex items-center justify-center bg-[#4b3b34] font-[Amiri]">
+        <div className="bg-[#fdf8f2] p-8 rounded-lg shadow-lg border border-[#e0d6c8] max-sm:w-[90%] sm:w-[90%] md:w-[70%] lg:w-[50%]">
+          <h2 className="text-3xl font-bold mb-6 text-center text-[#4b3b34]">
+            إنشاء حساب جديد
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  First Name
+                <label className="block text-sm font-semibold text-[#4b3b34]">
+                  الاسم الأول
                 </label>
                 <input
                   type="text"
                   name="first_name"
-                  placeholder="Enter your First Name"
+                  placeholder="اكتب اسمك الأول"
                   value={formData.first_name}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-[#c2b9ad] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a68a6e] focus:border-[#a68a6e]"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Last Name
+                <label className="block text-sm font-semibold text-[#4b3b34]">
+                  الاسم الأخير
                 </label>
                 <input
                   type="text"
                   name="last_name"
-                  placeholder="Enter your Last Name"
+                  placeholder="اكتب اسم العائلة"
                   value={formData.last_name}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-[#c2b9ad] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a68a6e] focus:border-[#a68a6e]"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Email
+                <label className="block text-sm font-semibold text-[#4b3b34]">
+                  البريد الإلكتروني
                 </label>
                 <input
                   type="email"
                   name="email"
-                  placeholder="Enter your email"
+                  placeholder="أدخل بريدك الإلكتروني"
                   value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-[#c2b9ad] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a68a6e] focus:border-[#a68a6e]"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Password
+                <label className="block text-sm font-semibold text-[#4b3b34]">
+                  كلمة المرور
                 </label>
                 <input
                   type="password"
                   name="password1"
-                  placeholder="Enter your password"
+                  placeholder="اكتب كلمة المرور"
                   value={formData.password1}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-[#c2b9ad] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a68a6e] focus:border-[#a68a6e]"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Confirm Password
+                <label className="block text-sm font-semibold text-[#4b3b34]">
+                  تأكيد كلمة المرور
                 </label>
                 <input
                   type="password"
                   name="password2"
-                  placeholder="Confirm your password"
+                  placeholder="أعد كتابة كلمة المرور"
                   value={formData.password2}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-[#c2b9ad] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a68a6e] focus:border-[#a68a6e]"
                   required
                 />
               </div>
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-4"
+              className="w-full bg-[#6a5c51] text-white py-2 px-4 rounded-md hover:bg-[#5b4e46] focus:outline-none focus:ring-2 focus:ring-[#a68a6e] focus:ring-offset-2 mt-4 transition duration-300"
             >
-              Sign Up
+              إنشاء حساب
             </button>
           </form>
 
-          {/* Sign In Link */}
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Already Registered?{" "}
+            <p className="text-sm text-[#4b3b34]">
+              لديك حساب بالفعل؟{" "}
               <Link
                 to="/login"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-semibold text-[#8c7764] hover:underline"
               >
-                Sign In
+                تسجيل الدخول
               </Link>
             </p>
           </div>

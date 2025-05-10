@@ -12,9 +12,9 @@ const ChatComponent = () => {
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(null);
-  const [chatName, setChatName] = useState(""); // State for adding chat
-  const [editChatName, setEditChatName] = useState(""); // State for editing chat
-  const [editingChatId, setEditingChatId] = useState(null); // Track chat being edited
+  const [chatName, setChatName] = useState("");
+  const [editChatName, setEditChatName] = useState("");
+  const [editingChatId, setEditingChatId] = useState(null);
 
   const chatRef = useRef(null);
 
@@ -25,7 +25,7 @@ const ChatComponent = () => {
         const filteredChats = data.filter((chat) => chat.type === "type_1");
         setChats(filteredChats);
       } catch (error) {
-        console.error("Error fetching chats:", error);
+        console.error("حدث خطأ أثناء تحميل المحادثات:", error);
       }
     };
     loadChats();
@@ -34,7 +34,6 @@ const ChatComponent = () => {
   const handleSelectChat = async (chat) => {
     const chatExists = chats.find((c) => c.id === chat.id);
     if (!chatExists) {
-      console.error("Selected chat does not exist or was deleted.");
       setSelectedChat(null);
       setMessages([]);
       return;
@@ -45,7 +44,6 @@ const ChatComponent = () => {
 
     try {
       const chatDetails = await fetchAPI(`chat/${chat.id}/`);
-
       if (chatDetails?.messages?.length) {
         const formattedMessages = chatDetails.messages.flatMap((message) => [
           { text: message.question, sender: "user" },
@@ -54,7 +52,7 @@ const ChatComponent = () => {
         setMessages(formattedMessages);
       }
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error("حدث خطأ أثناء تحميل الرسائل:", error);
     }
   };
 
@@ -76,11 +74,9 @@ const ChatComponent = () => {
           ...prev,
           { text: data.response, sender: "bot" },
         ]);
-      } else {
-        console.error("No response from API:", data);
       }
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("حدث خطأ أثناء إرسال الرسالة:", error);
     } finally {
       setLoading(false);
     }
@@ -90,34 +86,33 @@ const ChatComponent = () => {
     try {
       await fetchAPI(`chat/${chatId}/`, "DELETE");
       setChats((prevChats) => prevChats.filter((chat) => chat.id !== chatId));
-
       if (selectedChat?.id === chatId) {
         setSelectedChat(null);
         setMessages([]);
       }
-      toast.success("Chat deleted successfully!");
+      toast.success("تم حذف المحادثة بنجاح!");
     } catch (error) {
-      console.error("Error deleting chat:", error);
+      console.error("حدث خطأ أثناء الحذف:", error);
     }
   };
 
   const handleAddChat = async () => {
     try {
       const newChat = await fetchAPI("chat/", "POST", {
-        name: chatName || "New Chat",
+        name: chatName || "محادثة جديدة",
         type: "type_1",
       });
       setChats((prev) => [newChat, ...prev]);
       setChatName("");
-      toast.success("Chat added successfully!");
+      toast.success("تمت إضافة المحادثة!");
     } catch (error) {
-      console.error("Error adding chat:", error);
+      console.error("خطأ في الإضافة:", error);
     }
   };
 
   const handleUpdateChat = async (chatId) => {
     if (!editChatName.trim()) {
-      toast.error("Chat name cannot be empty!");
+      toast.error("اسم المحادثة لا يمكن أن يكون فارغًا!");
       return;
     }
 
@@ -132,12 +127,11 @@ const ChatComponent = () => {
           chat.id === chatId ? { ...chat, ...updatedChat } : chat
         )
       );
-
       setEditingChatId(null);
       setEditChatName("");
-      toast.success("Chat updated successfully!");
+      toast.success("تم تعديل المحادثة!");
     } catch (error) {
-      console.error("Error updating chat:", error);
+      console.error("خطأ أثناء التعديل:", error);
     }
   };
 
@@ -148,54 +142,52 @@ const ChatComponent = () => {
   }, [messages]);
 
   return (
-    <section className="h-screen flex flex-col md:flex-row bg-gray-100">
+    <section
+      dir="rtl"
+      style={{ fontFamily: "Amiri, 'Scheherazade', serif" }}
+      className="h-screen flex flex-col md:flex-row bg-[#f5f0e6] text-[#4b3f2f]"
+    >
       <button
-        className="md:hidden mt-28 bg-indigo-500 text-white p-5 text-center"
+        className="md:hidden mt-28 bg-[#8b5e3c] text-white p-5 text-center"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
-        {sidebarOpen ? "Close Chat List" : "Open Chat List"}
+        {sidebarOpen ? "إغلاق القائمة" : "فتح القائمة"}
       </button>
 
       <div
-        className={`w-full mt-24 md:w-1/4 bg-white shadow-md p-4 border-r md:static absolute top-0 left-0 transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        className={`w-full mt-24 md:w-1/4 bg-[#fff8ec] shadow-md p-4 border-r md:static absolute top-0 right-0 transition-transform duration-300 ease-in-out ${
+          sidebarOpen ? "translate-x-0" : "translate-x-full"
         } md:translate-x-0`}
       >
         <div className="flex mt-10 justify-between items-center mb-4">
           <input
             type="text"
-            placeholder="Enter chat name..."
+            placeholder="اسم المحادثة..."
             value={chatName}
             onChange={(e) => setChatName(e.target.value)}
-            className="border p-2 rounded w-full mr-2"
+            className="border p-2 rounded w-full ml-2 text-right"
           />
           <button
             onClick={handleAddChat}
-            className="bg-green-500 text-white p-2 rounded"
+            className="bg-green-600 text-white p-2 rounded"
           >
             <FaPlus />
           </button>
         </div>
 
-        <ul
-          className={`max-h-[400px] transition-all ${
-            chats.length > 5 && !menuOpen
-              ? "overflow-y-auto"
-              : "overflow-visible"
-          }`}
-        >
+        <ul className="max-h-[400px] overflow-y-auto">
           {chats.length > 0 ? (
             chats.map((chat) => (
               <li
                 key={chat.id}
                 className={`flex justify-between items-center p-3 cursor-pointer rounded mb-2 ${
                   selectedChat?.id === chat.id
-                    ? "bg-indigo-200"
-                    : "hover:bg-gray-200"
+                    ? "bg-[#d9c8af]"
+                    : "hover:bg-[#f2e7d5]"
                 }`}
-                onClick={() => handleSelectChat(chat) && setSidebarOpen(false)}
+                onClick={() => handleSelectChat(chat)}
               >
-                <span>
+                <span className="text-right">
                   <strong>{chat.name}</strong>
                   <p className="text-xs text-gray-500">
                     {format(new Date(chat.updated_at), "PPpp")}
@@ -211,12 +203,12 @@ const ChatComponent = () => {
                     <FaEllipsisV />
                   </button>
                   {menuOpen === chat.id && (
-                    <div className="absolute right-0  mt-2 w-40 z-40 bg-white shadow-md rounded-md py-1 ">
+                    <div className="absolute left-0 mt-2 w-40 z-40 bg-white shadow-md rounded-md py-1">
                       {editingChatId === chat.id ? (
                         <div className="flex p-2">
                           <input
                             type="text"
-                            className="border p-1 rounded w-full"
+                            className="border p-1 rounded w-full text-right"
                             value={editChatName}
                             onChange={(e) => setEditChatName(e.target.value)}
                           />
@@ -224,9 +216,9 @@ const ChatComponent = () => {
                             onClick={() =>
                               handleUpdateChat(chat.id) && setMenuOpen(false)
                             }
-                            className="bg-blue-500 text-white p-1 rounded ml-1"
+                            className="bg-blue-600 text-white p-1 rounded mr-1"
                           >
-                            Save
+                            حفظ
                           </button>
                         </div>
                       ) : (
@@ -236,15 +228,15 @@ const ChatComponent = () => {
                               setEditingChatId(chat.id);
                               setEditChatName(chat.name);
                             }}
-                            className="flex items-center gap-2 px-3 py-1 text-blue-500 w-full hover:bg-gray-200"
+                            className="flex items-center gap-2 px-3 py-1 text-blue-600 w-full hover:bg-gray-200"
                           >
-                            <FaEdit /> Edit
+                            <FaEdit /> تعديل
                           </button>
                           <button
                             onClick={() => handleDeleteChat(chat.id)}
-                            className="flex items-center gap-2 px-3 py-1 text-red-500 w-full hover:bg-gray-200"
+                            className="flex items-center gap-2 px-3 py-1 text-red-600 w-full hover:bg-gray-200"
                           >
-                            <FaTrash /> Delete
+                            <FaTrash /> حذف
                           </button>
                         </>
                       )}
@@ -254,20 +246,20 @@ const ChatComponent = () => {
               </li>
             ))
           ) : (
-            <p className="text-gray-500 text-center">Create New Chat</p>
+            <p className="text-gray-500 text-center">لا توجد محادثات بعد</p>
           )}
         </ul>
       </div>
 
       <div className="w-full md:w-3/4 flex flex-col items-center justify-center p-4">
-        <div className="mt-24 max-md:mt-0 bg-gray-100 p-6 w-full max-w-full">
-          <h2 className="text-2xl font-bold mt-10 mb-4 text-center text-indigo-600">
-            {selectedChat ? selectedChat.name : "Select a Chat"}
+        <div className="mt-24 bg-[#fdf8f1] p-6 w-full">
+          <h2 className="text-2xl font-bold mt-10 mb-4 text-center text-[#8b5e3c]">
+            {selectedChat ? selectedChat.name : "اختر محادثة"}
           </h2>
 
           <div
             ref={chatRef}
-            className="h-[300px] max-md:h-[300px] overflow-y-auto p-3 rounded bg-gray-100 mb-4 w-full"
+            className="h-[300px] overflow-y-auto p-3 rounded bg-[#f3efe7] mb-4 w-full"
           >
             {messages.length > 0 ? (
               messages.map((msg, index) => (
@@ -275,34 +267,34 @@ const ChatComponent = () => {
                   key={index}
                   className={`mb-2 p-2 rounded-lg max-w-[80%] ${
                     msg.sender === "bot"
-                      ? "bg-indigo-200 self-start"
-                      : "bg-blue-200 self-end ml-auto"
+                      ? "bg-[#e5d6c3] self-start"
+                      : "bg-[#d6e4d3] self-end mr-auto"
                   }`}
                 >
                   {msg.text}
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center">No messages yet</p>
+              <p className="text-gray-500 text-center">لا توجد رسائل بعد</p>
             )}
           </div>
 
           <div className="flex gap-2 w-full">
             <input
               type="text"
-              className="border rounded p-2 w-full text-sm md:text-base"
-              placeholder="Type a message..."
+              className="border rounded p-2 w-full text-right"
+              placeholder="اكتب رسالتك هنا..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               disabled={loading || !selectedChat}
             />
             <button
-              className="bg-indigo-500 text-white px-4 py-2 rounded text-sm md:text-base disabled:opacity-50"
+              className="bg-[#8b5e3c] text-white px-4 py-2 rounded disabled:opacity-50"
               onClick={handleSendMessage}
               disabled={loading || !selectedChat}
             >
-              {loading ? "Sending..." : "Send"}
+              {loading ? "جارٍ الإرسال..." : "إرسال"}
             </button>
           </div>
         </div>

@@ -18,6 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
+        amiri: ['Amiri', 'serif'],
         palanquin: ['Palanquin', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
       },
